@@ -10,7 +10,7 @@ def upload_file(file_name, object_name=None):
     if object_name is None:
         object_name = file_name.split("\\")[-1]
 
-    s3 = boto3.client("s3")
+    s3 = boto3.client("s3", region_name="ap-southeast-2")
 
     try:
         s3.upload_file(file_name, BUCKET_NAME, object_name)
