@@ -1,40 +1,35 @@
-# This file manages alert generation.
-# It saves alerts into an output file
-# and prints alerts on screen.
+# Generate and save security alerts
 
 from datetime import datetime
 
 
 def generate_alert(message):
-    """
-    Creates one alert message with timestamp.
-    """
+    try:
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        alert = f"[ALERT] {timestamp} - {message}"
 
-    alert = f"[ALERT] {timestamp} - {message}"
+        print(alert)
 
-    print(alert)
+        with open("output/alerts.txt", "a") as file:
+            file.write(alert + "\n")
 
-    with open("output/alerts.txt", "a") as file:
-        file.write(alert + "\n")
+        return True
+
+    except Exception as e:
+        print("ERROR:", str(e))
+        return False
 
 
 def generate_multiple_alerts(alert_list):
-    """
-    Creates multiple alerts from a list.
-    """
-
-    for alert in alert_list:
-        generate_alert(alert)
+    for item in alert_list:
+        generate_alert(item)
 
 
-# Test run
 if __name__ == "__main__":
     sample_alerts = [
         "Failed login attempt from 192.168.1.20",
-        "Port scan detected from 10.0.0.5",
-        "Multiple denied connections from 172.16.0.8"
+        "Port scan detected from 10.0.0.5"
     ]
 
     generate_multiple_alerts(sample_alerts)

@@ -1,16 +1,9 @@
-# This file parses raw log lines into structured records.
-# It is part of the log processing module.
-# Parsed output will later be used for threat detection.
+# Parse raw logs into structured records
 
 import re
 
-def parse_log_line(line):
-    """
-    Parses one log line and extracts:
-    date, time, device, event, ip
-    """
 
-    # Regular expression for sample log format
+def parse_log_line(line):
     pattern = r"(\w+\s+\d+)\s+(\d+:\d+:\d+)\s+(\w+)\s+(.+)\sfrom\s([\d\.]+)"
 
     match = re.match(pattern, line)
@@ -28,27 +21,32 @@ def parse_log_line(line):
 
 
 def parse_log_file(file_path):
-    """
-    Reads log file and parses all lines.
-    Returns list of structured records.
-    """
-
     parsed_logs = []
 
-    with open(file_path, "r") as file:
-        for line in file:
-            line = line.strip()
+    try:
+        print("\nReading log file...")
 
-            if line:
-                result = parse_log_line(line)
+        with open(file_path, "r") as file:
+            for line in file:
+                line = line.strip()
 
-                if result:
-                    parsed_logs.append(result)
+                if line:
+                    result = parse_log_line(line)
 
-    return parsed_logs
+                    if result:
+                        parsed_logs.append(result)
+
+        print(f"SUCCESS: Parsed {len(parsed_logs)} log entries.")
+        return parsed_logs
+
+    except FileNotFoundError:
+        print("ERROR: Log file not found.")
+    except Exception as e:
+        print("ERROR:", str(e))
+
+    return []
 
 
-# Test run
 if __name__ == "__main__":
     logs = parse_log_file("output/downloaded_sample_log.txt")
 
