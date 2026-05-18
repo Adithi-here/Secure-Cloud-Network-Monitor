@@ -1,5 +1,16 @@
-# Defines detection rules for network threats
-# Each rule is a function that returns (True/False, message, severity)
+"""
+Threat detection rules for identifying suspicious activities
+from parsed network logs.
+
+Current threats detected:
+- Failed login attempts
+- Port scanning activity
+- Multiple denied connections
+
+Each rule returns alert details and severity information. 
+Each rule is technically a function that returns (True/False, message, severity)
+The module is designed to support easy future expansion.
+"""
 
 def failed_login_rule(log):
     """
