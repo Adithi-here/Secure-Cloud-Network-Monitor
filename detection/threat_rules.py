@@ -340,7 +340,7 @@ def device_anomaly_rule(log):
 
     device_event_tracker[device] = recent_events
 
-    if len(recent_events) >= 15:
+    if len(recent_events) == 15:
 
         return {
             "detected": True,
